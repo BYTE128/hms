@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %}Search Patient{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('onlineSearch.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div>
+   <h1 class="display-4 text-center">Patient Search</h1>
+</div>
+<div class="d-flex align-items-center justify-content-center max-vw-100">
+   <div>
+      <form action="{{ url_for('onlineSearch.search') }}" method="POST">
+         <table>
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="patient_id">Enter Patient ID</label>
+                     <input class="form-control" type="text" placeholder="Enter Your Patient ID" name="patient_id" id="patient_id" required>
+                     <button class="btn btn-success" type="submit">Search</button>
+                  </td>
+               </div>
+            </tr>
+         </table>
+      </form>
+   </div>
+</div>
+<div class="d-flex align-items-center justify-content-center min-vw-100">
+   <div>
+      <form class="pure-form">
+         <table>
+            {%for x in myresult%}
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="patient_name">Patient Name</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="patient_name" name="patient_name" value="{{x[0]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            <tr>
+               <div>
+                  <td class="form-group">
+                     <label for="patient_age">Patient Age</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="patient_age" name="patient_age" value="{{x[1]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="Date of admission">Date Of Admission</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="patient_doj" name="patient_doj" value="{{x[2]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="">Room type</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="country" name="country" value="{{x[3]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="">Address</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="country" name="paddr" value="{{x[4]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="">State</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="country" name="pstate" value="{{x[5]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            <tr>
+               <div class="form-group">
+                  <td>
+                     <label for="">City</label>
+                  </td>
+               </div>
+               <div class="form-group">
+                  <td>
+                     <input type="text" id="country" name="pcity" value="{{x[6]}}" readonly class="form-control">
+                  </td>
+               </div>
+            </tr>
+            {%endfor%}
+         </table>
+      </form>
+   </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+   function error()
+   {
+      alert("Patient ID Does'nt Exists");
+   }
+</script>
+{% endblock %}

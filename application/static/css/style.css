@@ -1,0 +1,184 @@
+*, *.before, *.after {
+	box-sizing: border-box;
+}
+
+/** Only supports in Google Chrome **/
+/* Scrollbar width */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1; 
+}
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+	background: #888; 
+}
+
+/* Scrollbar Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+}
+
+html, body {
+	size: 100%;
+}
+
+body{
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 300;
+    background: #2BC0E4;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #EAECC6, #2BC0E4);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #EAECC6, #2BC0E4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+a,
+a:hover,
+a:focus{
+	color: inherit;
+	text-decoration: none;
+	transition: all 0.3s;
+}
+
+/* Side Bar*/
+#sidebar.active {
+	margin-left: -225px;
+}
+
+.wrapper{
+	display: flex;
+	text-decoration: none;
+	transition: all 0.3s;
+	position: relative;
+}
+
+.navbar-custom {
+	position: fixed;
+	width: 100vw;
+	z-index: 1000;
+}
+
+#sidebar{
+	min-width: 225px;
+	max-width: 225px;
+	height: calc(100vh - 56px);
+	background: #2b333c;
+	color: #fff;
+	transition: all 0.3s;
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	top: 56px;
+	margin-left: 0px;
+	z-index: 1;
+}
+
+#sidebar ul.components{
+	padding: 20px 0;
+	color: #bea8a8;
+}
+
+#sidebar ul p{
+	color: #fff;
+	padding: 10px;
+}
+
+#sidebar ul li a{
+	padding: 10px;
+	font-size: 1.1em;
+	display: block;
+}
+
+#sidebar ul li a:hover{
+	color: #ff8172;
+	background: #fff;
+}
+
+.sidebar-footer {
+	color: #bea8a8;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+a[data-toggle="collapse"]{
+	position: relative;
+}
+
+.dropdown-toggle::after{
+	display: block;
+	position: absolute;
+	top: 50%;
+	right: 20%;
+	transform: translateY(-50%);
+}
+
+ul ul a{
+	font-size: 0.9em !important;
+	padding-left: 30px !important;
+	
+}
+
+.wrapper #sidebar .interface {
+	color: #b76e79;
+	font-weight: 500;
+}
+
+#content{
+	width: 100vw;
+	padding: 20px;
+	min-height: calc(100vh - 56px);
+	/* margin-left: 225px; */
+	margin-top: 56px;
+	transition: all 0.3s;
+	display: flex;
+	flex-direction: column;
+	text-align: justify;
+}
+
+/* #content.active {
+	margin-left: 225px;
+} */
+
+@media (max-width: 992px) {
+	#sidebar {
+		margin-left: -225px;
+	}
+	#sidebar.active {
+		margin-left: 0;
+	}
+	#sidebarCollapse span {
+		display: none;
+	}
+	/* #content {
+		margin-left: 0px;
+	}
+	#content.active {
+		margin-left: 225px;
+	} */
+}
+
+/*************** Put CSS below this line ***************/
+
+/* Headings */
+
+.index-heading {
+	font-family: "Balsamiq Sans", sans-serif;
+	font-weight: 600;
+	color: #29435c;
+	;
+}
+
+/* index.html */
+
+.main-image {
+	width: 30%;
+	display: block;
+	margin: 3% auto 0;
+	opacity: 0.4;
+}
+
+.heart {
+	color: red;
+}

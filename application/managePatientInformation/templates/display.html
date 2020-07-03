@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}View Patients{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('managePatientInformation.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div><h1 class="display-4 text-center">Patient Details</h1></div>
+<div class="mt-5">
+	<table id="viewdb" name="viewdb" class="table table-light table-bordered table-striped w-75 mx-auto">
+		<thead class="thead-dark">
+			<th colspan="6" scope="col">
+				<strong><p class="lead text-center">Patient Details</p></strong>
+			</th>
+		</thead>
+		<tbody>
+			<tr>
+				<th>Patient ID</th>
+				<th>Patient Name</th>
+				<th>Patient Age</th>
+				<th>Patient Address</th>
+				<th>Date Of Admission</th>
+				<th>Type Of Room</th>
+			</tr>
+			{%for x in view_result %}
+			<tr>
+				<td>{{x[1]}}</td>
+				<td>{{x[2]}}</td>
+				<td>{{x[4]}}</td>
+				<td>{{x[3]}}</td>
+				<td>{{x[5]}}</td>
+				<td>{{x[6]}}</td>
+			</tr> 
+			{% endfor %} 
+		</tbody>
+	</table>
+</div>  
+{% endblock %}

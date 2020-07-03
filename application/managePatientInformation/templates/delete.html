@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block title %}Delete Patient{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('managePatientInformation.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+</head>
+<div><h1 class="display-4 text-center">Patient Deletion</h1></div>
+<div class="d-flex align-items-center justify-content-center max-vw-100">
+    <div>
+        <form method="POST" name="delete" id="deleteForm">
+            <table>
+                <tr>
+                    <div class="form-group">
+                        <td><label for="patient_id">Enter Patient ID&emsp;&nbsp;</label></td>
+                        <td>
+                            <input class="form-control" placeholder="Enter Patient ID" type="text" name="patient_id" id="patient_id" value="">
+                        </td>
+                    </div>
+                </tr>
+            </table>
+            <input type="submit" class="btn btn-secondary" value="Get" id="getButton">
+        </form>
+        <form>
+            <div id="hideDiv">
+                <table>
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="patient_name">Patient Name</label></td>
+                            <td><input class="form-control" type="text" id="patient_name" name="patient_name" value="" readonly></td>
+                        </div>
+                    </tr>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="patient_age">Patient Age</label></td>
+                            <td><input type="text" class="form-control" id="patient_age" name="patient_age" value="" readonly></td>
+                        </div>
+                    </tr>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="date_of_admission">Date Of Admission</label></td>
+                            <td><input type="text" class="form-control" id="patient_doj" name="patient_doj" value="" readonly></td>
+                        </div>
+                    </tr>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="rtype">Room Type</label></td>
+                            <td><input type="text" class="form-control" id="r_type" name="r_type" value="" readonly></td>
+                        </div>
+                    </tr>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="">Address</label></td>
+                            <td><input type="text" class="form-control" id="addr" name="addr" value="" readonly></td>
+                        </div>
+                    </tr>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="">State</label></td>
+                            <td><input type="text" class="form-control" id="pstate" name="pstate" value="" readonly></td>
+                        </div>
+                    </tr>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for="">City</label></td>
+                            <td><input class="form-control" type="text" id="pcity" name="pcity" value="" readonly></td>
+                        </div>
+                    </tr>
+                </table>
+                <input type="button" class="btn btn-danger" value="Delete" id="deleteButton">
+            </div>
+        </form>         
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    
+    $(document).ready(function() {
+        $("#hideDiv").hide();
+    });
+    
+    document.querySelector("#deleteForm").addEventListener('submit', delete_confirm);
+    
+    function delete_confirm(e) {
+        e.preventDefault();
+        var patientId = document.querySelector("#patient_id").value;
+        var patientIdObj = {"patient_id": patientId};
+        console.log("Inside get" + patientId);
+        if(patientId == ''){
+            toastr.options = {
+                "closeButton": true,
+                "positionClass": "toast-top-full-width",
+                "newestOnTop": true
+            }
+            toastr.error("Please enter Patient ID");
+        } else {
+            fetch(`${window.origin}/managePatientInformation/patientgetpage`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(patientIdObj),
+                cache: "no-cache",
+                headers: new Headers({ 
+                    "content-type": "application/json"
+                })
+            }).then(response => {
+                response.json().then(data => {
+                    console.log(data);
+                    if('message' in data){
+                        toastr.options = {
+                            "closeButton": true,
+                            "positionClass": "toast-top-full-width",
+                            "newestOnTop": true
+                        }
+                        toastr.error(data['message']);
+                    } else {
+                        var fieldsList = ['patient_id', 'patient_name', 'patient_age', 'patient_doj', 'r_type', 'addr', 'pstate', 'pcity']
+                        for(var i in fieldsList){
+                            document.getElementById(fieldsList[i]).value = data[0][i];
+                        }
+                        $("#getButton").hide();
+                        $("#hideDiv").show();
+                    }
+                });
+            });
+        }    
+    }
+    
+    document.querySelector("#deleteButton").addEventListener('click', function(){
+        var patientId = document.querySelector("#patient_id").value;
+        console.log(patientId);
+        var patientIdObj = {"patient_id": patientId};
+        console.log("Inside delete");
+        var confirmWarning = confirm("Are You Sure You Want To Proceed With Deletion ? Action Is Irreversible.");
+        if (confirmWarning){
+            fetch(`${window.origin}/managePatientInformation/patientdelete`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(patientIdObj),
+                cache: "no-cache",
+                headers: new Headers({ 
+                    "content-type": "application/json"
+                })
+            }).then(response => {
+                response.json().then(data => {
+                    console.log(data);
+                    toastr.options = {
+                        "closeButton": true,
+                        "positionClass": "toast-top-full-width",
+                        "newestOnTop": true
+                    }
+                    toastr.success(data['message']);
+                    setTimeout(() => {
+                        location.reload();
+                        alert("This page will now refresh. Press OK");
+                    }, 3000);
+                });
+            });
+        } else {
+            alert("You pressed cancel, record not deleted");
+        }
+    });
+</script>
+{% endblock %}

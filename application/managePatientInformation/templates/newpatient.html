@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+
+{% block title %}Patient Registration{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('managePatientInformation.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div><h1 class="display-4 text-center">New Patient Registration</h1></div>
+<div class="d-flex align-items-center justify-content-center max-vw-100">
+    <div>
+        <form method = "POST" name="new_patient" action="{{ url_for('managePatientInformation.register') }}" id="update">
+            <table>
+                
+                <tr>
+                    <th colspan = "2">
+                        {% for messages in get_flashed_messages() %}
+                        <div class="alert alert-danger" role="alert">
+                            {{messages}}
+                        </div>
+                        {% endfor %}
+                    </th>        
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for = "ssn">Enter SSN ID</label></td>
+                        <td><input type="text" name="ssn" placeholder="Enter 9 Digit SSN ID" class="form-control" id="ssn" required></td>
+                    </div>
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="patient_name">Patient Name</label></td>
+                        <td><input type="text" id="patient_name" name="patient_name" placeholder="Enter Patient's Name" class="form-control" required></td>
+                    </div>
+                </tr>
+                
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="patient_age">Patient Age</label></td>
+                        <td><input type="text" id="pat_age" name="pat_age" placeholder="Enter Patient's Age" class="form-control" required></td>
+                    </div>                               
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="Date of admission">Date Of Admission</label></td>
+                        <td><input type="date" id="patient_doj" name="patient_doj" placeholder="Enter Date" class="form-control" required></td>
+                    </div>                                
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="">Room Type</label></td>
+                        <td>
+                            <select name="rtype" class="form-control" required> 
+                                {% for x in type_room%}
+                                <option value="{{x}}">{{x}}</option> 
+                                {%endfor%} 
+                            </select>
+                        </td>
+                    </div>
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="">Address</label></td>
+                        <td><input type="text" id="country" name="addr" placeholder="Enter Patient Address" class="form-control" required></td>
+                    </div>                               
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for ="">State</label></td>
+                        <td>
+                            <select class="form-control" id="states" name="pstates" required> 
+                                {% for j in updatesw_states %}
+                                <option value="{{j}}">{{j}}</option> 
+                                {% endfor %} 
+                            </select>
+                        </td>
+                    </div>
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for ="">City</label></td>
+                        <td>
+                            <select class="form-control" id="cities" name="pcities" required></select>
+                        </td>
+                    </div>
+                </tr>
+            </table>
+            <div class="text-center w-100 mt-4">
+                <input class="btn btn-success" type="submit" id="submit" name="submit">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    let stateSelect = document.getElementById("states");
+    let citySelect = document.getElementById("cities");
+    
+    stateSelect.onchange = function(){
+        state = stateSelect.value;
+        fetch(`${window.origin}/managePatientInformation/city/${state}`).then(response => {
+            response.json().then(data => {
+                let optionHTML = "";
+                for(let city of data) {
+                    optionHTML += "<option value = " + city + ">" + city + "</option>";
+                }
+                
+                citySelect.innerHTML = optionHTML;
+                
+            });
+        });
+    };
+</script>
+{% endblock %}

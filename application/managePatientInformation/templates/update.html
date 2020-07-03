@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block title %}Update Patient Details{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('managePatientInformation.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div><h1 class="display-4 text-center">Update Patient Details</h1></div>			
+<div></div>
+</head>
+<body>
+    <div class="d-flex align-items-center justify-content-center min-vw-100">
+        <div>
+            <form method = "POST" name="update" action="{{ url_for('managePatientInformation.update') }}" id="update">
+                <table>
+                    
+                    <tr>
+                        <div class="form-group">
+                            <td><label for = "patient_id">Enter Patient ID</label></td>
+                            <td><input class="form-control" type="text" name="patient_id" id="patient_id" value="{%if myresult3 != [] %}{{myresult3[0][1]}}{%endif%}"></td>                                          
+                        </div>
+                    </tr>
+                    {% for x in myresult3 %}
+                    <tr><div class="form-group">
+                        <td><label for="patient_name">Patient Name</label></td>
+                        <td><input class="form-control" type="text" id="patient_name" name="patient_name" value="{{x[2]}}"></td>
+                    </div>                                
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="patient_age">Patient Age</label></td>
+                        <td><input type="text" class="form-control" id="pat_age" name="pat_age" value="{{x[4]}}"></td>
+                    </div>
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="Date of admission">Date Of Admission</label></td>
+                        <td><input type="date" id="patient_doj" class="form-control" name="patient_doj" value="{{x[5]}}"></td>
+                    </div>                              
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="">Room Type</label></td>
+                        <td>
+                            <select class="form-control" id="r_type" name="r_type">
+                                <option value="{{x[6]}}" selected>{{x[6]}}</option>
+                                {% for j in type_room %}
+                                {% if j != x[6] %}
+                                <option value="{{j}}">{{j}}</option>
+                                <!--<option value="{{x[]}}"></option>-->
+                                {%endif%}{% endfor %}
+                            </select>
+                        </td>
+                    </div>   
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for="">Address</label></td>
+                        <td><input class="form-control" type="text" id="country" name="addr" value="{{x[3]}}"></td>
+                    </div>                              
+                </tr>
+                
+                <tr>
+                    <div class="form-group">
+                        <td><label for ="">State</label></td>
+                        <td><select class="form-control" id="states" name="states">
+                            <option value="{{x[8]}}" selected>{{x[8]}}</option>
+                            {% for j in update_states %}
+                            {% if j != x[8] %}
+                            <option value="{{j}}">{{j}}</option>
+                            {%endif%}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </div>  
+            </tr>
+            
+            <tr><div class="form-group">
+                <td>City</td>
+                <td><select class="form-control" id="cities" name="cities">
+                    <option value="{{x[7]}}" selected>{{x[7]}}</option>
+                    {% for j in update_cities %}
+                    {% if j != x[7] %}
+                    <option value="{{j}}">{{j}}</option>
+                    {%endif%}
+                    {% endfor %}
+                </select>
+            </td>
+        </div>
+    </tr>
+    {%endfor%}
+    <tr>
+        <div class="form-group">
+            <td><input class="btn btn-primary {%if myresult3!=[] %} btn btn-success {%endif%} text-center" type="submit" id="update" name="update" value="{%if myresult3 == [] %}Get{%elif myresult3 != [] %}Update{%endif%}"></td></div>
+        </tr>
+    </table>
+</form>
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function update_confirm() {
+        alert("Are You Sure You Want To Proceed With Updation Of Fields ?")
+        alert("Updated successfully!!!")
+        document.getElementById('update').reset();
+    }
+</script>
+{% endblock %}

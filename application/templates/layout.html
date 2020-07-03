@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<!-- Bootstrap CDN -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+	integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+	<!-- Material Design Bootstrap -->
+	<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> -->
+	
+	<!-- Pure CSS -->
+	<!-- <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"> -->
+	
+	<!-- DataTable CSS-->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+	
+	<!-- Google Font -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu|Balsamiq+Sans">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400&display=swap">
+	
+	<!-- Font Awesome -->
+	<!-- <script src="https://kit.fontawesome.com/ce40f74648.js" crossorigin="anonymous"></script> -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+	<link rel="stylesheet" href="https:////cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	
+	<link rel="stylesheet" href="../static/css/style.css">
+
+	{% block stylesheets %}{% endblock %}
+	
+	<title>{% block title %}{% endblock %} | HMS</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand navbar-dark bg-dark navbar-custom">
+		<button class="btn btn-dark btn-sm order-1 order-lg-0 ml-1" id="sidebarToggle"><i class="fas fa-bars text-secondary"></i></button>
+		<a class="navbar-brand ml-4" href="index.html"><i class="fas fa-medkit fa-fw"></i>&ensp;HMS</a>
+		{% if session['username'] %}
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user pr-3"></i></a>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+					<a class="dropdown-item" href="{{ url_for('websiteLogin.logout') }}">Logout</a>
+				</div>
+			</li>
+		</ul>
+		{% endif %}
+	</nav>
+	
+	<div class="wrapper">
+		<nav id="sidebar">
+			<div>
+				<ul class="list-unstyled components pl-3">
+					<p class="interface">Interface</p>
+					<li>
+						<a href="{{ url_for('main.index') }}"><i class="fas fa-home fa-fw"></i>&ensp;Home</a>
+					</li>
+					<!-- <li><a href="#"><i class="fas fa-sticky-note fa-fw"></i>&ensp;About Us</a></li> -->
+					{% if not session['username'] %}
+					<li>
+						<a href="{{ url_for('websiteLogin.login') }}"><i class="fas fa-sign-in-alt fa-fw"></i>&ensp;Login</a>
+					</li>
+					{% endif %}
+					{% if session['username'] %}
+					{% if session['user_type'] == "admissionDeskExecutive" %}
+					<li>
+						<a href="#executiveSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text-wrap"><i class="fas fa-user-cog fa-fw"></i>&ensp;Admission<br><span class="ml-4"></span>&nbsp;&thinsp;Desk Exec.</a>
+						<ul class="collapse list-unstyled" id="executiveSubmenu">
+							<li><a href="{{ url_for('managePatientInformation.register') }}">Add Patient</a></li>
+							<li><a href="{{ url_for('managePatientInformation.update') }}">Update Patient</a></li>
+							<li><a href="{{ url_for('managePatientInformation.deletePage') }}">Delete Patient</a></li>
+							<li><a href="{{ url_for('managePatientInformation.view') }}">View Patients</a></li>
+							<li><a href="{{ url_for('onlineSearch.search') }}">Search Patient</a></li>
+							<li><a href="{{ url_for('patientBilling.patientBilling') }}">Print Bill</a></li>
+						</ul>
+					</li>
+					{% endif %}
+					{% if session['user_type'] == "pharmacist" %}
+					<li>
+						<a href="#pharmacistSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-prescription fa-fw"></i>&ensp;Pharmacist</a>
+						<ul class="collapse list-unstyled" id="pharmacistSubmenu">
+							<li><a href="{{ url_for('managePharmacyDetails.managePharmacyDetails') }}">Issue Medicines</a></li>
+						</ul>
+					</li>
+					{% endif %}
+					{% if session['user_type'] == "diagnosticExecutive" %}
+					<li>
+						<a href="#diagnosticSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-x-ray fa-fw"></i>&ensp;Diagnostic<br><span class="ml-4">&nbsp;&thinsp;Executive</span></a>
+						<ul class="collapse list-unstyled" id="diagnosticSubmenu">
+							<li><a href="{{ url_for('manageDiagnostics.manageDiagnostics') }}">Add Tests</a></li>
+						</ul>
+					</li>
+					{% endif %}
+					{% endif %}
+					<li><a href="#"><i class="fas fa-id-badge fa-fw"></i>&ensp;Contact Us</a></li>
+				</ul>
+			</div>
+			{% if session['username'] %}
+			<div class="sidebar-footer mt-auto pl-3 pt-3 pb-2 small">
+				<div class="small">Logged in as:</div>
+				{{ session['username'] }}
+			</div>
+			{% endif %}
+		</nav>
+		
+		
+		<div id="content">
+			
+			<!-- *********** Your content below this line *********** -->
+			<div class="main">
+
+				{% with messages = get_flashed_messages(with_categories=true) %}
+					{% if messages %}
+						{% for category, message in messages %}
+							<div class="alert alert-{{ category }} text-center">
+								<h6 class="font-weight-bold">{{ message }}</h6>
+							</div>
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+
+
+				{% block content %}
+				{% endblock %}
+
+			</div>
+			
+			<!-- ************* Your content above this line ************* -->
+			
+			<div class="footer mt-auto px-3">
+				<footer class="">
+					<div class="container-fluid">
+						<div class="d-flex align-items-center justify-content-between small">
+							<div class="text-muted">&copy; Copyright &#64; Hospital Management System 2020</div>
+							<div class="mr-5">
+								<strong>Made with <span class="heart">❤</span> in India</strong>
+							</div>
+							<div class="ml-5">
+								<a href="#" class="text-primary">Privacy Policy</a>
+								&middot;
+								<a href="#" class="text-primary">Terms &amp; Conditions</a>
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- Bootstrap Scripts -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+	<!-- MDB core JavaScript -->
+	<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script> -->
+	
+	<!-- DataTable Script -->
+	<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+
+	{% block script %}{% endblock %}
+
+	<script>
+		$('#sidebarToggle').on('click', function (e) {
+			e.preventDefault();
+			$('#sidebar').toggleClass('active');
+			// $('#content').toggleClass('active');
+		});
+	</script>
+</body>
+</html>

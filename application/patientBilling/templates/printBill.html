@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block title %}Bill Desk{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('patientBilling.patientBilling') }}" method="POST">
+  <div>
+    <div class="input-group-prepend">
+      <!-- <label for="ws_pat_id" class="font-weight-bold">Enter Patient ID</label> -->
+      <input type="text" class="form-control" name = "ws_pat_id" id="cust_id" placeholder="Enter Patient ID">
+      <input type="submit" class="btn btn-primary" name="view"/>  
+    </div>
+  </div>
+</form>
+<br>
+<div id = "printableArea">
+  <div id="hideInitially">
+    <table class="table table-bordered table-hover table-light table-sm">
+      <thead class="thead-dark">
+        <th colspan="6" scope="col" class="text-center"><B>Patient Billing</B></th>
+        
+        <tr>
+          <th>Patient ID</th>
+          <th>Name</th> 
+          <th>Age</th>
+          <th>Address</th>
+          <th>DOJ</th>
+          <th>Room</th>         
+        </tr>
+      </thead>
+      
+      <tr>    
+        <td>{{patient_info[0]}}</td>
+        <td>{{patient_info[1]}}</td>
+        <td>{{patient_info[2]}}</td>
+        <td>{{patient_info[3]}}</td>
+        <td>{{patient_info[4]}}</td>
+        <td>{{patient_info[5]}}</td>
+        
+      </tr>
+      <tr>    
+        <td></td>
+        <td></td>
+        <th>No. of days</th>
+        <th>{{total[0]}}</th>
+        <th>Bill for Rooms</th>
+        <th>{{total[1]}}</th>
+      </tr>
+    </table>
+    
+    <table class="table table-bordered table-hover table-light table-sm">
+      <thead class="thead-dark">
+        <th colspan="6" scope="col" class="text-center"><B>Pharmacy Charges</B></th>
+        <tr class="patient-table-header">
+          <th><label for="medicine">Medicine</label></th>
+          <th><label for="quantity">Quantity</label></th>
+          <th><label for="rate">Rate</label></th>
+          <th><label for="amount">Amount</label></th>
+        </tr>
+      </thead>
+      {% for x in range(0,len1) %}
+      <tr>    
+        
+        <td>{{myResult[x][0]}}</td>
+        <td>{{myResult[x][1]}}</td>
+        <td>{{myResult[x][2]}}</td>
+        {% set sum_med = myResult[x][1]*myResult[x][2] %}
+        <td>{{ sum_med }}</td>
+      </tr>
+      
+      {% endfor%} 
+      <tr>
+        <td></td>
+        <td></td>
+        <th>Bill for Pharmacy</th>
+        <th>{{ total[2] }}</th>
+      </tr>
+      
+    </table>
+    <table class="table table-bordered table-hover table-light table-sm">
+      <thead class="thead-dark">
+        <th colspan="6" scope="col" class="text-center"><B>Diagnostics Charges</B></th>
+        <tr class="patient-table-header">
+          <th><label for="diagnostics">Name of test</label></th>
+          <th><label for="amount">Amount</label></th>
+        </tr>
+      </thead>
+      {% set sum_dia1 = 0 %}
+      {% for x in range(0,len2) %}
+      <tr>    
+        
+        <td>{{myResult1[x][0]}}</td>
+        <td>{{myResult1[x][1]}}</td>
+        
+      </tr>
+      
+      {% endfor%} 
+      <tr>
+        <th>Bill for Diagnostics</th>
+        <th>{{ total[3] }}</th>
+      </tr>
+      
+      <tr></tr>
+    </table>
+    
+    <table class="table table-bordered table-light table-striped">
+      <thead class="thead-dark">
+          <th colspan="6" scope="col" class="text-center">Grand Total</th>
+      </thead>
+      <tr>
+        <th class="thead-dark">Bill for Rooms</th>
+        <th>{{total[1]}}</th>
+      </tr>
+      <tr>
+        <th>Bill for Pharmacy</th>
+        <th>{{ total[2] }}</th>
+      </tr>
+      <tr>
+        <th>Bill for Diagnostics</th>
+        <th>{{ total[3] }}</th>
+      </tr>
+      <tr>
+        <th><h5><strong>Total</strong></h5></th>
+        <th>{{ total[4] }}</th>
+        
+      </tr>
+    </table>
+    
+  </div>
+</div>
+
+<input type="button" class="btn btn-primary" onclick="printDiv('printableArea')" value="Print"/>
+<br>
+<br>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  function printDiv(divName) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+    
+    document.body.innerHTML = printContents;
+    
+    window.print();
+    
+    document.body.innerHTML = originalContents;
+  }
+</script>
+{% endblock %}

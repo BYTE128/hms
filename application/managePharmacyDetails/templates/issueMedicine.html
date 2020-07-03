@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}Issue Medicines{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('managePharmacyDetails.static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<p class="small mb-1"><em>*First press reset button before start issuing medicines for another patient</em></p>
+<form id="requestDetail" method="POST">
+    <div class="input-group md-form form-sm form-1 pl-0">
+        <div class="input-group-prepend">
+            <span class="input-group-text purple lighten-3" id="basic-text1"><i class="fas fa-search"
+                aria-hidden="true"></i></span>
+            </div>
+            <input class="form-control my-0 py-1" type="text" placeholder="Enter Patient ID" name="patient_id" id="patient_id" aria-label="Search">
+            <input class="btn btn-outline-success btn-rounded btn-sm my-0" type="submit" id="search" value="Search">
+        </div>
+    </form>
+    <br>
+    
+    <div id="hideInitially">
+        <form id="myForm">
+            <h6 class="text-center font-weight-bold">Patient Details</h6>
+            <div class="table-responsive">
+                <table id="patientTable" class="table table-light table-bordered table-hover" cellspacing="0">
+                    <thead class="thead-dark">
+                        <tr class="patient-table-header">
+                            <th><label for="patient_name">Patient Name</label></th>
+                            <th><label for="patient_age">Patient Age</label></th>
+                            <th><label for="Date of admission">Date Of Admission</label></th>
+                            <th><label for="Room type">Room Type</label></th>
+                            <th><label for="Address">Address</label></th>
+                            <th><label for="State">State</label></th>
+                            <th><label for="City">City</label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><label id="patient_name" name="patient_name"></label></td>
+                            <td><label id="patient_age" name="patient_age"></label></td>
+                            <td><label id="patient_doj" name="patient_doj"></label></td>
+                            <td><label id="country" name="country"></label></td>
+                            <td><label id="paddr" name="paddr"></label></td>
+                            <td><label id="pstate" name="pstate"></label></td>
+                            <td><label id="pcity" name="pcity"></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h6 class="text-center font-weight-bold">Medicines Issued</h6>
+            <div class="table-responsive">
+                <table id="medicineTable" class="table table-light table-bordered table-hover" cellspacing="0">
+                    <thead class="thead-dark">
+                        <tr class="">
+                            <th><label for="medicine">Medicine</label></th>
+                            <th><label for="quantity">Quantity</label></th>
+                            <th><label for="rate">Rate</label></th>
+                            <th><label for="amount">Amount</label></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="text-center">
+                <button id="issueMedicinesButton" class="btn btn-secondary">Issue Medicines</button>
+            </div>
+            <br>
+            <div class="table-repsonsive">
+                <table id="issueMedicineTable" class="table table-light table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr class="patient-table-header">
+                            <th><label for="medicine">Medicine</label></th>
+                            <th><label for="quantity">Quantity Available</label></th>
+                            <th><label for="quantity">Quantity</label></th>
+                            <th><label for="rate">Rate</label></th>
+                            <th><label for="amount">Amount</label></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><select id="medicineSelect1" class="custom-select medicineSelect"></select></td>
+                            <td><input type="text" class="input-group-text text-left quantityAvailable w-100" disabled></td>
+                            <td><input type="text" id="quantity1" class="input-group-text text-left quantity w-100" placeholder="Enter quantity to issue"></td>
+                            <td><input type="text" class="input-group-text text-left rate w-100" disabled></td>
+                            <td><input type="text" class="input-group-text text-left amount w-100" disabled></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <button id="addRow" class="btn btn-success btn-small m-2">Add Row</button>
+                <button id="deleteRow" class="btn btn-danger btn-small m-2">Delete Row</button>
+                <button id="reset" class="btn btn-danger btn-small m-2">Reset Form</button>
+            </div>
+            <br>
+        </form>
+    </div>
+    {% endblock %}
+    
+    {% block script %}
+    
+    <script src="{{ url_for('managePharmacyDetails.static', filename='js/script.js') }}"></script>
+    
+    {% endblock %}

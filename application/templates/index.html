@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<div class="text-center mt-5">
+    {% if not session['username'] %}
+    <h1 class="index-heading">Not Logged In</h1>
+    <a href="{{ url_for('websiteLogin.login') }}" class="btn-link">Click here to login</a>
+    {% endif %}
+    {% if session['username'] %}
+    <h1 class="index-heading">Welcome to Hospital Management System</h1>
+    {% endif %}
+    <img src="../static/images/caduceus.png" alt="" class="main-image">
+</div>
+
+{% endblock %}
